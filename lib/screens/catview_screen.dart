@@ -36,16 +36,16 @@ class CatViewScreen extends StatelessWidget {
                   height: 150,
                   width: MediaQuery.of(context).size.width,
                   fit: BoxFit.cover,
-                  'https://images.pexels.com/photos/7079774/pexels-photo-7079774.jpeg?auto=compress&cs=tinysrgb&w=600'),
-              Container(
-                height: 150,
-                width: MediaQuery.of(context).size.width,
-                color: Colors.black26,
-              ),
+                  'https://images.pexels.com/photos/1008000/pexels-photo-1008000.jpeg?auto=compress&cs=tinysrgb&w=600'),
+              // Container(
+              //   height: 150,
+              //   width: MediaQuery.of(context).size.width,
+              //   color: Colors.black26,
+              // ),
               Column(
                 children: [
                   Container(
-                      padding: EdgeInsets.only(top: 70),
+                      padding: const EdgeInsets.only(top: 70),
                       alignment: Alignment.center,
                       child: const Text(
                         'Mountains',
@@ -58,20 +58,22 @@ class CatViewScreen extends StatelessWidget {
               )
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
-          SizedBox(
-            height: 440,
-            child: GridView.builder(
-                physics: const BouncingScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, mainAxisExtent: 250),
-                itemCount: 30,
-                itemBuilder: (BuildContext context, int index) {
-                  return const WallpapersBlock();
-                }),
-          ),
+         // SizedBox(
+           // height: 440,
+           Expanded(
+             child: GridView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, mainAxisExtent: 250),
+                  itemCount: 30,
+                  itemBuilder: (BuildContext context, int index) {
+                    return const WallpapersBlock();
+                  }),
+           ),
+          //),
         ],
       ),
       //),

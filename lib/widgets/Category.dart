@@ -22,7 +22,7 @@ class CategoryBlock extends StatelessWidget {
         decoration: BoxDecoration(
             image: const DecorationImage(
                 image: NetworkImage(
-                  'https://images.pexels.com/photos/3802510/pexels-photo-3802510.jpeg?auto=compress&cs=tinysrgb&w=600',
+                  'https://images.pexels.com/photos/3786092/pexels-photo-3786092.jpeg?auto=compress&cs=tinysrgb&w=600',
                 ),
                 fit: BoxFit.cover),
             borderRadius: BorderRadius.circular(50)),

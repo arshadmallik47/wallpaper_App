@@ -56,8 +56,8 @@ class SearchPage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 10,),
-              Container(
-                height: 500,
+              Expanded(
+                
                 child:  GridView.builder(
           physics: const BouncingScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

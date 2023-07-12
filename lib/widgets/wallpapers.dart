@@ -11,7 +11,7 @@ class WallpapersBlock extends StatelessWidget {
       decoration: BoxDecoration(
           image: const DecorationImage(
               image: NetworkImage(
-                'https://images.pexels.com/photos/3802510/pexels-photo-3802510.jpeg?auto=compress&cs=tinysrgb&w=600',
+                'https://images.pexels.com/photos/5083405/pexels-photo-5083405.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
               ),
               fit: BoxFit.cover),
           borderRadius: BorderRadius.circular(10)),

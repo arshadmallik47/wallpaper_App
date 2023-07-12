@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:wallpapper_app/screens/home.dart';
+import 'package:wallpapper_app/auth/splash_screen.dart';
+
 
 void main() {
-  runApp(const MyApp());
+  
+  runApp(
+    const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -11,13 +14,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Wallpapper App',
       theme: ThemeData(
-        primarySwatch: Colors.deepPurple
+        primarySwatch: Colors.purple
 
       ),
-      home: const HomeScreen(),
+      home: const SplashScreen(),
     );
   }
 }
