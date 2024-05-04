@@ -1,8 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:wallpapper_app/controller/apiOperation.dart';
-import 'package:wallpapper_app/widgets/wallpapers.dart';
-
-//import '../widgets/Category.dart';
 
 class WallpaperPage extends StatefulWidget {
   const WallpaperPage({super.key});
@@ -13,26 +11,44 @@ class WallpaperPage extends StatefulWidget {
 
 class _WallpaperPageState extends State<WallpaperPage> {
   @override
-  void initState() {
-    super.initState();
-    ApiOperations.GetTrendingWallpapers();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Wallpapers'),
       ),
-      body: GridView.builder(
-          physics: const BouncingScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, mainAxisExtent: 320),
-          itemCount: 30,
-          itemBuilder: (BuildContext context, int index) {
-            return const WallpapersBlock();
+      body: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('walls')
+              .snapshots(), // Adjust the query as needed
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return const Center(child: Text('Error fetching cards'));
+            } else {
+              return GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisSpacing: 5,
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 5),
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: GridTile(
+                        child: CachedNetworkImage(
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                          fit: BoxFit.cover,
+                          imageUrl:
+                              snapshot.data!.docs.elementAt(index)['imageUrl'],
+                        ),
+                      ),
+                    );
+                  });
+            }
           }),
-      //),
     );
   }
 }
