@@ -1,10 +1,9 @@
+// ignore_for_file: camel_case_types, constant_identifier_names
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
-import 'package:wallpapper_app/widgets/wallpapers.dart';
-
-//import '../widgets/Category.dart';
+import 'package:wallpapper_app/utils/utils.dart';
 
 class CatViewScreen extends StatefulWidget {
   final String category;
@@ -62,14 +61,22 @@ class _CatViewScreenState extends State<CatViewScreen> {
                       mainAxisExtent: 250),
                   itemCount: catDocuments.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                            image: CachedNetworkImageProvider(
-                              catDocuments.elementAt(index)['imageUrl'],
-                            ),
-                            fit: BoxFit.cover),
+                    return GestureDetector(
+                      onTap: () async {
+                        await setWallpapers(
+                          context: context,
+                          url: catDocuments.elementAt(index)['imageUrl'],
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          image: DecorationImage(
+                              image: CachedNetworkImageProvider(
+                                catDocuments.elementAt(index)['imageUrl'],
+                              ),
+                              fit: BoxFit.cover),
+                        ),
                       ),
                     );
                   }),
