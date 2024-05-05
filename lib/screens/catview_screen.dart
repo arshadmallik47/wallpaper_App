@@ -1,12 +1,20 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:wallpapper_app/widgets/wallpapers.dart';
 
 //import '../widgets/Category.dart';
 
-class CatViewScreen extends StatelessWidget {
-  const CatViewScreen({super.key});
+class CatViewScreen extends StatefulWidget {
+  final String category;
+  const CatViewScreen({super.key, required this.category});
 
+  @override
+  State<CatViewScreen> createState() => _CatViewScreenState();
+}
+
+class _CatViewScreenState extends State<CatViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,8 +22,8 @@ class CatViewScreen extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        title: const Text(
-          'Wallpapers',
+        title: Text(
+          widget.category.toUpperCase(),
           style: TextStyle(color: Colors.black),
         ),
         leading: InkWell(
@@ -28,55 +36,50 @@ class CatViewScreen extends StatelessWidget {
               size: 30,
             )),
       ),
-      body: Column(
-        children: [
-          Stack(
-            children: [
-              Image.network(
-                  height: 150,
-                  width: MediaQuery.of(context).size.width,
-                  fit: BoxFit.cover,
-                  'https://images.pexels.com/photos/1008000/pexels-photo-1008000.jpeg?auto=compress&cs=tinysrgb&w=600'),
-              // Container(
-              //   height: 150,
-              //   width: MediaQuery.of(context).size.width,
-              //   color: Colors.black26,
-              // ),
-              Column(
-                children: [
-                  Container(
-                      padding: const EdgeInsets.only(top: 70),
-                      alignment: Alignment.center,
-                      child: const Text(
-                        'Mountains',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25,
-                            fontWeight: FontWeight.w500),
-                      ))
-                ],
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-         // SizedBox(
-           // height: 440,
-           Expanded(
-             child: GridView.builder(
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('walls').snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return const Center(child: Text('Error fetching cards'));
+          }
+          if (snapshot.hasData) {
+            var catDocuments = snapshot.data!.docs.where((element) {
+              var data = element.data() as Map<String, dynamic>?;
+              // Adding a null check before accessing the map
+              return data != null && data['tags'] == widget.category;
+            });
+
+            return Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: GridView.builder(
                   physics: const BouncingScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, mainAxisExtent: 250),
-                  itemCount: 30,
+                      mainAxisSpacing: 8.0,
+                      crossAxisSpacing: 8.0,
+                      crossAxisCount: 1,
+                      mainAxisExtent: 250),
+                  itemCount: catDocuments.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return const WallpapersBlock();
+                    return Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        image: DecorationImage(
+                            image: CachedNetworkImageProvider(
+                              catDocuments.elementAt(index)['imageUrl'],
+                            ),
+                            fit: BoxFit.cover),
+                      ),
+                    );
                   }),
-           ),
-          //),
-        ],
+            );
+            //      ),
+          } else {
+            return CircularProgressIndicator(); // or any other loading indicator
+          }
+        },
       ),
-      //),
     );
   }
 }

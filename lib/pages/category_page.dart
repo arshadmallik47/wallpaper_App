@@ -48,6 +48,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:wallpapper_app/screens/catview_screen.dart';
 
 class CategoryPage extends StatefulWidget {
   const CategoryPage({Key? key}) : super(key: key);
@@ -83,32 +84,45 @@ class _CategoryPageState extends State<CategoryPage> {
         title: const Text('Category'),
       ),
       body: GridView.builder(
+        physics: const BouncingScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          crossAxisSpacing: 4.0,
-          mainAxisSpacing: 4.0,
+          crossAxisSpacing: 8.0,
+          mainAxisSpacing: 20.0,
         ),
         itemCount: categories.length,
         itemBuilder: (BuildContext context, int index) {
-          return Container(
-            alignment: Alignment.center,
-            margin: const EdgeInsets.all(5.0),
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: CachedNetworkImageProvider(
-                      categoryImages.elementAt(index),
-                    ),
-                    fit: BoxFit.cover),
-                borderRadius: BorderRadius.circular(50)),
-            child: Text(
-              categories.elementAt(index),
-              style: TextStyle(
+          return InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        CatViewScreen(category: categories.elementAt(index)),
+                  ));
+            },
+            child: Container(
+              alignment: Alignment.center,
+              margin: const EdgeInsets.all(5.0),
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: CachedNetworkImageProvider(
+                        categoryImages.elementAt(index),
+                      ),
+                      fit: BoxFit.cover),
+                  borderRadius: BorderRadius.circular(50)),
+              child: Text(
+                categories.elementAt(index).toUpperCase(),
+                style: TextStyle(
+                  fontSize: 30,
+                  color: Colors.white,
                   decoration: TextDecoration.combine([
                     TextDecoration.underline,
                     TextDecoration.overline,
                   ]),
-                  fontSize: 30,
-                  color: Colors.white),
+                  decorationStyle: TextDecorationStyle.double,
+                ),
+              ),
             ),
           );
         },

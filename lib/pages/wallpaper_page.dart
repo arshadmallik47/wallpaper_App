@@ -31,6 +31,7 @@ class _WallpaperPageState extends State<WallpaperPage> {
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisSpacing: 5,
                       crossAxisCount: 3,
+                      mainAxisExtent: 180,
                       mainAxisSpacing: 5),
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (BuildContext context, int index) {
