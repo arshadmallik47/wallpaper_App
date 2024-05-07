@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wallpapper_app/provider/theme_provider.dart';
 
 class WallpaperPage extends StatefulWidget {
   const WallpaperPage({super.key});
@@ -12,9 +14,26 @@ class WallpaperPage extends StatefulWidget {
 class _WallpaperPageState extends State<WallpaperPage> {
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    bool isDarkModeEnabled = themeProvider.isDarkMode;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Wallpapers'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              themeProvider.setDarkMode(!isDarkModeEnabled);
+              // if (isDarkModeEnabled) {
+              //   ThemeData.light();
+              // } else {
+              //   ThemeData.dark();
+              // }
+            },
+            icon: Icon(themeProvider.isDarkMode
+                ? Icons.brightness_5
+                : Icons.brightness_5_outlined),
+          )
+        ],
       ),
       body: StreamBuilder(
           stream: FirebaseFirestore.instance

@@ -2,7 +2,10 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:wallpapper_app/auth/splash_screen.dart';
+import 'package:wallpapper_app/provider/theme_provider.dart';
+import 'package:wallpapper_app/services/app_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,12 +32,14 @@ class MyApp extends StatelessWidget {
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Wallpaper App',
-      theme: ThemeData(primarySwatch: Colors.purple),
-      home: const SplashScreen(),
-    );
-  }
+  Widget build(BuildContext context) => AppProvider(
+        child: Consumer<ThemeProvider>(builder: (context, themeProvider, _) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Wallpaper App',
+            theme: themeProvider.themeData,
+            home: const SplashScreen(),
+          );
+        }),
+      );
 }

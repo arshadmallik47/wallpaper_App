@@ -1,6 +1,7 @@
-// ignore_for_file: camel_case_types
+// ignore_for_file: camel_case_types, use_build_context_synchronously, unnecessary_null_comparison
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_wallpaper_manager/flutter_wallpaper_manager.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -48,8 +49,21 @@ Future<void> setWallpapers(
   if (option != null) {
     var cachedImage = await DefaultCacheManager().getSingleFile(url);
     if (cachedImage != null) {
-      var croppedImage =
-          await ImageCropper().cropImage(sourcePath: cachedImage.path);
+      var croppedImage = await ImageCropper().cropImage(
+        sourcePath: cachedImage.path,
+        // aspectRatio: CropAspectRatio(
+        //   ratioX: MediaQuery.of(context).size.width * 1,
+        //   ratioY: MediaQuery.of(context).size.height * 1,
+        // ),
+        // uiSettings: [
+        //   AndroidUiSettings(
+        //     toolbarTitle: 'Image Cropper',
+        //     toolbarColor: Colors.blue,
+        //     hideBottomControls: true,
+        //   ),
+        // ]
+      );
+
       if (croppedImage != null) {
         var result = await WallpaperManager.setWallpaperFromFile(
             cachedImage.path, _setAs[option]!);
