@@ -82,9 +82,8 @@ class _CatViewScreenState extends State<CatViewScreen> {
                   }),
             );
             //      ),
-          } else {
-            return CircularProgressIndicator(); // or any other loading indicator
           }
+          return Container();
         },
       ),
     );

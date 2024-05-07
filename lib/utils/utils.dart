@@ -1,6 +1,9 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_wallpaper_manager/flutter_wallpaper_manager.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 enum setWallpaperAs {
   Home,
@@ -45,12 +48,15 @@ Future<void> setWallpapers(
   if (option != null) {
     var cachedImage = await DefaultCacheManager().getSingleFile(url);
     if (cachedImage != null) {
-      var result = await WallpaperManager.setWallpaperFromFile(
-          cachedImage.path, _setAs[option]!);
-      if (result != null) {
-        print(result);
+      var croppedImage =
+          await ImageCropper().cropImage(sourcePath: cachedImage.path);
+      if (croppedImage != null) {
+        var result = await WallpaperManager.setWallpaperFromFile(
+            cachedImage.path, _setAs[option]!);
+        if (result != null) {
+          print(result);
+        }
       }
-      ;
     }
   }
 }
