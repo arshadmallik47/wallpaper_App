@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:provider/provider.dart';
 import 'package:wallpapper_app/pages/category_page.dart';
 import 'package:wallpapper_app/pages/favorite_page.dart';
 import 'package:wallpapper_app/pages/wallpaper_page.dart';
+import 'package:wallpapper_app/provider/theme_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final controller = PersistentTabController(initialIndex: 0);
+  final controller = PersistentTabController(initialIndex: 1);
   List<Widget> _buildScreen() {
     return [
       const WallpaperPage(),
@@ -23,24 +25,29 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   List<PersistentBottomNavBarItem> _navBarItem() {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return [
       PersistentBottomNavBarItem(
-        activeColorPrimary: const Color.fromRGBO(100, 198, 248, 1),
+        activeColorPrimary: themeProvider.isDarkMode
+            ? Colors.purpleAccent
+            : const Color.fromRGBO(100, 198, 248, 1),
         inactiveColorPrimary: const Color.fromRGBO(130, 131, 131, 1),
         // textStyle: const TextStyle(fontSize: 17),
         icon: const Icon(
           Icons.wallpaper,
         ),
-        title: 'Wallpapers',
+        title: 'All Images',
       ),
       PersistentBottomNavBarItem(
-        activeColorPrimary: const Color.fromRGBO(100, 198, 248, 1),
+        activeColorPrimary: themeProvider.isDarkMode
+            ? Colors.purpleAccent
+            : const Color.fromRGBO(100, 198, 248, 1),
         inactiveColorPrimary: const Color.fromRGBO(130, 131, 131, 1),
         // textStyle: const TextStyle(fontSize: 17),
         icon: const Icon(
-          Icons.collections,
+          Icons.home,
         ),
-        title: 'Category',
+        title: 'Home',
       ),
       // PersistentBottomNavBarItem(
       //   activeColorPrimary: const Color.fromRGBO(100, 198, 248, 1),
@@ -53,7 +60,9 @@ class _HomeScreenState extends State<HomeScreen> {
       //   title: 'Search',
       // ),
       PersistentBottomNavBarItem(
-        activeColorPrimary: const Color.fromRGBO(100, 198, 248, 1),
+        activeColorPrimary: themeProvider.isDarkMode
+            ? Colors.purpleAccent
+            : const Color.fromRGBO(100, 198, 248, 1),
         inactiveColorPrimary: const Color.fromRGBO(130, 131, 131, 1),
         // textStyle: const TextStyle(fontSize: 13),
         icon: const Icon(
@@ -66,9 +75,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: PersistentTabView(
+        backgroundColor: themeProvider.isDarkMode ? Colors.black : Colors.white,
+        controller: controller,
         context,
         screens: _buildScreen(),
         items: _navBarItem(),

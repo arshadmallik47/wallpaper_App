@@ -43,21 +43,17 @@ class ThemeProvider extends ChangeNotifier {
 
   ThemeData get themeData => _isDarkMode
       ? darkTheme.copyWith(
-          appBarTheme: AppBarTheme(
-            color: _primaryColor,
+          appBarTheme: const AppBarTheme(
+            color: Colors.black,
           ),
-          bottomNavigationBarTheme: BottomNavigationBarThemeData(
-            backgroundColor: _primaryColor,
+          bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+            backgroundColor: Colors.black,
           ),
         )
       : lightTheme.copyWith(
           appBarTheme: AppBarTheme(
-              color: _primaryColor,
-              iconTheme: const IconThemeData(color: Colors.white)),
-          bottomNavigationBarTheme: BottomNavigationBarThemeData(
-            backgroundColor: _primaryColor,
-            selectedItemColor: Colors.white,
-            unselectedItemColor: Colors.white.withOpacity(0.6),
+            color: _primaryColor,
+            iconTheme: const IconThemeData(color: Colors.white),
           ),
         );
 }

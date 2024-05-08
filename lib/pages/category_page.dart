@@ -1,53 +1,8 @@
-// import 'package:flutter/material.dart';
-// import 'package:wallpapper_app/widgets/Category.dart';
-
-// class CategoryPage extends StatefulWidget {
-//  // final AsyncSnapshot snapshot;
-//   const CategoryPage({super.key,});
-
-//   @override
-//   State<CategoryPage> createState() => _CategoryPageState();
-// }
-
-// class _CategoryPageState extends State<CategoryPage> {
-// final categories=List<String>;
-// final categoryImages=List<String>;
-
-// @override
-//   void initState() {
-//     // TODO: implement initState
-//     super.initState();
-
-//   }
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar: AppBar(
-//           title: const Text('Category'),
-//         ),
-//         body: GridView.builder(
-
-//             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-
-//               crossAxisCount:2,
-
-//             ),
-//             itemCount: 30,
-//             itemBuilder: (BuildContext context, int index) {
-
-//             })
-//         // body: ListView.builder(
-
-//         //     itemCount: 30,
-//         //     itemBuilder: (contex, index) =>const CategoryBlock(),
-
-//         //     ),
-//         );
-//   }
-// }
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+import 'package:wallpapper_app/provider/theme_provider.dart';
 import 'package:wallpapper_app/screens/catview_screen.dart';
 
 class CategoryPage extends StatefulWidget {
@@ -79,9 +34,24 @@ class _CategoryPageState extends State<CategoryPage> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    bool isDarkModeEnabled = themeProvider.isDarkMode;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Category'),
+        title: const Text(
+          'Categories',
+          style: TextStyle(color: Colors.white),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              themeProvider.setDarkMode(!isDarkModeEnabled);
+            },
+            icon: Icon(themeProvider.isDarkMode
+                ? Icons.brightness_5
+                : Icons.brightness_5_outlined),
+          )
+        ],
       ),
       body: GridView.builder(
         physics: const BouncingScrollPhysics(),

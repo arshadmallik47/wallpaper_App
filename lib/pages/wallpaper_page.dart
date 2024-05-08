@@ -18,16 +18,14 @@ class _WallpaperPageState extends State<WallpaperPage> {
     bool isDarkModeEnabled = themeProvider.isDarkMode;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Wallpapers'),
+        title: const Text(
+          'Wallpapers',
+          style: TextStyle(color: Colors.white),
+        ),
         actions: [
           IconButton(
             onPressed: () {
               themeProvider.setDarkMode(!isDarkModeEnabled);
-              // if (isDarkModeEnabled) {
-              //   ThemeData.light();
-              // } else {
-              //   ThemeData.dark();
-              // }
             },
             icon: Icon(themeProvider.isDarkMode
                 ? Icons.brightness_5
