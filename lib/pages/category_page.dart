@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
+import 'package:wallpapper_app/models/wallpaper_model.dart';
 import 'package:wallpapper_app/provider/theme_provider.dart';
 import 'package:wallpapper_app/screens/catview_screen.dart';
 
@@ -19,16 +20,18 @@ class _CategoryPageState extends State<CategoryPage> {
   @override
   void initState() {
     super.initState();
-    // Retrieve data from Firestore
     FirebaseFirestore.instance.collection('walls').get().then((querySnapshot) {
       querySnapshot.docs.forEach((doc) {
-        var category = doc.data()['tags'];
+        var wallpaper = WallpaperModel.fromDocumentSnapshot(doc);
+        var category = wallpaper.category;
+        var imageUrl = wallpaper.url;
         if (!categories.contains(category)) {
-          categories.add(category);
-          categoryImages.add(doc.data()['imageUrl']);
+          setState(() {
+            categories.add(category);
+            categoryImages.add(imageUrl);
+          });
         }
       });
-      setState(() {}); // Update the UI after data retrieval
     });
   }
 
